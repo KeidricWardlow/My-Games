@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Car Racing</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #00ffff 0%, #ffffff 50%, #00ffff 100%);
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+                background-size: cover;
+                text-align: center;
+                margin: 0;
+                padding: 0;
+            }
+
+            .gantry {
+                background-color: black;
+                color: white;
+                padding: 10px;
+            }
+
+            .race-track {
+                position: relative;
+                width: 100%;
+                height: 430px;
+                background-color: chartreuse;
+                border: 2px solid black;
+                margin: 20px auto;
+                overflow: hidden;
+            }
+
+            .car-row {
+                position: relative;
+                height: 42px;
+                margin-bottom: 3px;
+            }
+
+            .car {
+                position: absolute;
+                width: 60px;
+                height: 30px;
+                background-color: gray;
+                border-radius: 10px 10px 5px 5px;
+                border: 2px solid black;
+                left: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                padding: 0 5px;
+            }
+
+            .wheel {
+                width: 10px;
+                height: 10px;
+                background-color: black;
+                border-radius: 50%;
+            }
+
+            #redcar {
+                background-color: red;
+            }
+
+            #yellowcar {
+                background-color: yellow;
+            }
+
+            #bluecar {
+                background-color: blue;
+            }
+
+            #orangecar {
+                background-color: orange;
+            }
+
+            #greencar {
+                background-color: green;
+            }
+
+            #purplecar {
+                background-color: purple;
+            }
+
+            #blackcar {
+                background-color: black;
+            }
+
+            #pinkcar {
+                background-color: pink;
+            }
+
+            #browncar {
+                background-color: brown;
+            }
+
+            #whitecar {
+                background-color: white;
+            }
+
+            button {
+                margin: 10px 5px;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                background-color: #444;
+                color: white;
+                border: none;
+                border-radius: 5px;
+            }
+
+            button:hover {
+                background-color: teal;
+            }
+
+            #winnersList {
+                margin: 30px auto;
+                width: 80%;
+                max-width: 600px;
+                background-color: white;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: left;
+            }
+
+            #winnerHistory {
+                list-style-type: none;
+                padding-left: 0;
+            }
+
+            #winnerHistory li {
+                padding: 5px 0;
+                border-bottom: 1px solid white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="gantry">
+            <h1>Car Racing</h1>
+        </div>
+        <div class="race-track">
+            <div class="car-row">
+                <div class="car" id="redcar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="yellowcar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="bluecar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="orangecar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="greencar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="purplecar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="blackcar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="pinkcar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="browncar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="whitecar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+        </div>
+        <button id="startRace">Start Race</button>
+        <button id="clearHistory">Clear History</button>
+        <button id="exportCSV">Export as CSV</button>
+        <div id="winnersList">
+            <h2>Race Winners</h2>
+            <ul id="winnerHistory"></ul>
+        </div>
+        <script>
+            document.getElementById('startRace').addEventListener('click', startRace);
+            document.getElementById('clearHistory').addEventListener('click', clearHistory);
+            document.getElementById('exportCSV').addEventListener('click', exportToCSV);
+
+            function startRace() {
+                const cars = document.querySelectorAll('.car');
+                cars.forEach(car => {
+                    car.style.left = '0px';
+                });
+                const startTime = Date.now();
+                let raceInterval = setInterval(() => {
+                    for (let car of cars) {
+                        let currentPosition = parseInt(car.style.left) || 0;
+                        let randomDistance = Math.floor(Math.random() * 20) + 1;
+                        let newPosition = currentPosition + randomDistance;
+                        car.style.left = newPosition + 'px';
+                        if (newPosition >= (window.innerWidth - 80)) {
+                            clearInterval(raceInterval);
+                            const endTime = Date.now();
+                            const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+                            const winner = car.id;
+                            alert(winner + ' wins the race in ' + timeTaken + ' seconds!');
+                            saveWinner(winner, timeTaken);
+                            displayWinners();
+                            break;
+                        }
+                    }
+                }, 100);
+            }
+
+            function saveWinner(winner, timeTaken) {
+                const entry = {
+                    car: winner,
+                    time: timeTaken,
+                    timestamp: new Date().toLocaleString()
+                };
+                let winners = JSON.parse(localStorage.getItem('raceWinners')) || [];
+                winners.push(entry);
+                localStorage.setItem('raceWinners', JSON.stringify(winners));
+            }
+
+            function displayWinners() {
+                const winners = JSON.parse(localStorage.getItem('raceWinners')) || [];
+                const list = document.getElementById('winnerHistory');
+                list.innerHTML = '';
+                winners.slice().reverse().forEach(entry => {
+                    const li = document.createElement('li');
+                    li.textContent = `${entry.car} won in ${entry.time} sec on ${entry.timestamp}`;
+                    list.appendChild(li);
+                });
+            }
+
+            function clearHistory() {
+                localStorage.removeItem('raceWinners');
+                displayWinners();
+            }
+
+            function exportToCSV() {
+                const winners = JSON.parse(localStorage.getItem('raceWinners')) || [];
+                if (winners.length === 0) {
+                    alert("No race data to export.");
+                    return;
+                }
+                let csvContent = "Car,Time (s),Date\n";
+                winners.forEach(entry => {
+                    csvContent += `${entry.car},${entry.time},${entry.timestamp}\n`;
+                });
+                const blob = new Blob([csvContent], {
+                    type: "text/csv;charset=utf-8;"
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "race_winners.csv";
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            window.onload = displayWinners;
+        </script>
+    </body>
+</html>
