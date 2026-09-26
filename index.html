@@ -1,123 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>K's Games</title>  
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">  
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, teal, white);
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      position: relative;
-      overflow-y: auto;
-      padding: 40px 10px;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Car Racing</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #00ffff 0%, #ffffff 50%, #00ffff 100%);
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+                background-size: cover;
+                text-align: center;
+                margin: 0;
+                padding: 0;
+            }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 auto;
-      width: 100%;
-      max-width: 100vh;
-      text-align: center;
-      z-index: 2;
-    }
+            .gantry {
+                background-color: black;
+                color: white;
+                padding: 10px;
+            }
 
-    li a {
-      display: block;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 10px;
-      border: 2px solid black;
-      border-radius: 8px;
-      margin: 6px 0;
-      background: white;
-      transition: 0.2s;
-    }
+            .race-track {
+                position: relative;
+                width: 100%;
+                height: 430px;
+                background-color: chartreuse;
+                border: 2px solid black;
+                margin: 20px auto;
+                overflow: hidden;
+            }
 
-    li a:hover {
-      background: black;
-      color: teal;
-    }
+            .car-row {
+                position: relative;
+                height: 42px;
+                margin-bottom: 3px;
+            }
 
-    .read {
-      color: gray;
-    }
+            .car {
+                position: absolute;
+                width: 60px;
+                height: 30px;
+                background-color: gray;
+                border-radius: 10px 10px 5px 5px;
+                border: 2px solid black;
+                left: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                padding: 0 5px;
+            }
 
-    .unread {
-      color: blue;
-    }
+            .wheel {
+                width: 10px;
+                height: 10px;
+                background-color: black;
+                border-radius: 50%;
+            }
 
-    .background-image {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0.08;
-      width: 90%;
-      height: 90%;
-      object-fit: contain;
-      z-index: 1;
-      pointer-events: none;
-    }
+            #redcar {
+                background-color: red;
+            }
 
-    .overlay-watermark {
-      position: fixed;
-      bottom: 10px;
-      right: 20px;
-      width: 120px;
-      opacity: 0.4;
-      z-index: 3;
-      pointer-events: none;
-    }
+            #yellowcar {
+                background-color: yellow;
+            }
 
-    .watermark {
-      position: fixed;
-      bottom: 10px;
-      left: 20px;
-      font-size: 0.9rem;
-      color: rgba(0, 0, 0, 0.5);
-      z-index: 3;
-      font-weight: 600;
-    }
-  </style>
-</head>
-<body>
-  <img src="totaledcomputer.jpg" class="background-image" alt="Background image">
+            #bluecar {
+                background-color: blue;
+            }
 
-  <ul>
-    <li><a href="https://teal-moonbeam-f3b629.netlify.app/" target="_blank">Car Racing</a></li>
-  </ul>
+            #orangecar {
+                background-color: orange;
+            }
 
-  <img src="totaledcomputer.jpg" class="overlay-watermark" alt="Watermark image">
-  <div class="watermark">© 2025 K’s Tools</div>
+            #greencar {
+                background-color: green;
+            }
 
-  <script>
-    const links = document.querySelectorAll("ul li a");
-    const readLinks = JSON.parse(localStorage.getItem("readLinks")) || [];
+            #purplecar {
+                background-color: purple;
+            }
 
-    links.forEach(link => {
-      const href = link.getAttribute("href");
-      if (readLinks.includes(href)) {
-        link.classList.add("read");
-      } else {
-        link.classList.add("unread");
-      }
-      link.addEventListener("click", () => {
-        if (!readLinks.includes(href)) {
-          readLinks.push(href);
-          localStorage.setItem("readLinks", JSON.stringify(readLinks));
-          link.classList.remove("unread");
-          link.classList.add("read");
-        }
-      });
-    });
-  </script>
-</body>
+            #blackcar {
+                background-color: black;
+            }
+
+            #pinkcar {
+                background-color: pink;
+            }
+
+            #browncar {
+                background-color: brown;
+            }
+
+            #whitecar {
+                background-color: white;
+            }
+
+            button {
+                margin: 10px 5px;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                background-color: #444;
+                color: white;
+                border: none;
+                border-radius: 5px;
+            }
+
+            button:hover {
+                background-color: teal;
+            }
+
+            #winnersList {
+                margin: 30px auto;
+                width: 80%;
+                max-width: 600px;
+                background-color: white;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: left;
+            }
+
+            #winnerHistory {
+                list-style-type: none;
+                padding-left: 0;
+            }
+
+            #winnerHistory li {
+                padding: 5px 0;
+                border-bottom: 1px solid white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="gantry">
+            <h1>Car Racing</h1>
+        </div>
+        <div class="race-track">
+            <div class="car-row">
+                <div class="car" id="redcar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="yellowcar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="bluecar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="orangecar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="greencar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="purplecar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="blackcar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="pinkcar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="browncar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            <div class="car-row">
+                <div class="car" id="whitecar">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+        </div>
+        <button id="startRace">Start Race</button>
+        <button id="clearHistory">Clear History</button>
+        <button id="exportCSV">Export as CSV</button>
+        <div id="winnersList">
+            <h2>Race Winners</h2>
+            <ul id="winnerHistory"></ul>
+        </div>
+        <script>
+            document.getElementById('startRace').addEventListener('click', startRace);
+            document.getElementById('clearHistory').addEventListener('click', clearHistory);
+            document.getElementById('exportCSV').addEventListener('click', exportToCSV);
+
+            function startRace() {
+                const cars = document.querySelectorAll('.car');
+                cars.forEach(car => {
+                    car.style.left = '0px';
+                });
+                const startTime = Date.now();
+                let raceInterval = setInterval(() => {
+                    for (let car of cars) {
+                        let currentPosition = parseInt(car.style.left) || 0;
+                        let randomDistance = Math.floor(Math.random() * 20) + 1;
+                        let newPosition = currentPosition + randomDistance;
+                        car.style.left = newPosition + 'px';
+                        if (newPosition >= (window.innerWidth - 80)) {
+                            clearInterval(raceInterval);
+                            const endTime = Date.now();
+                            const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+                            const winner = car.id;
+                            alert(winner + ' wins the race in ' + timeTaken + ' seconds!');
+                            saveWinner(winner, timeTaken);
+                            displayWinners();
+                            break;
+                        }
+                    }
+                }, 100);
+            }
+
+            function saveWinner(winner, timeTaken) {
+                const entry = {
+                    car: winner,
+                    time: timeTaken,
+                    timestamp: new Date().toLocaleString()
+                };
+                let winners = JSON.parse(localStorage.getItem('raceWinners')) || [];
+                winners.push(entry);
+                localStorage.setItem('raceWinners', JSON.stringify(winners));
+            }
+
+            function displayWinners() {
+                const winners = JSON.parse(localStorage.getItem('raceWinners')) || [];
+                const list = document.getElementById('winnerHistory');
+                list.innerHTML = '';
+                winners.slice().reverse().forEach(entry => {
+                    const li = document.createElement('li');
+                    li.textContent = `${entry.car} won in ${entry.time} sec on ${entry.timestamp}`;
+                    list.appendChild(li);
+                });
+            }
+
+            function clearHistory() {
+                localStorage.removeItem('raceWinners');
+                displayWinners();
+            }
+
+            function exportToCSV() {
+                const winners = JSON.parse(localStorage.getItem('raceWinners')) || [];
+                if (winners.length === 0) {
+                    alert("No race data to export.");
+                    return;
+                }
+                let csvContent = "Car,Time (s),Date\n";
+                winners.forEach(entry => {
+                    csvContent += `${entry.car},${entry.time},${entry.timestamp}\n`;
+                });
+                const blob = new Blob([csvContent], {
+                    type: "text/csv;charset=utf-8;"
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "race_winners.csv";
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            window.onload = displayWinners;
+        </script>
+    </body>
 </html>
